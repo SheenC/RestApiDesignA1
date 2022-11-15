@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Database.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">A0</a> &gt; <a href="index.source.html" class="el_package">a0</a> &gt; <span class="el_source">Database.java</span></div><h1>Database.java</h1><pre class="source lang-java linenums">package a0;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.time.LocalDate;
+import java.util.*;
+
+public class Database {
+    private HashMap&lt;String, ArrayList&lt;Event&gt;&gt; eventDB;
+
+<span class="fc" id="L11">    public Database() {</span>
+<span class="fc" id="L12">        eventDB = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L13">    }</span>
+
+    public void addEvent(@NotNull Event event) {
+<span class="fc" id="L16">        String date = event.getMonth()+&quot;/&quot;+event.getDate()+&quot;/&quot;+event.getYear();</span>
+<span class="fc" id="L17">        ArrayList list = eventDB.getOrDefault(date, new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L18">        list.add(event);</span>
+<span class="fc" id="L19">        eventDB.put(date, list);</span>
+<span class="fc" id="L20">    }</span>
+
+    public void deleteEvent(String id) {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (String key : eventDB.keySet()) {</span>
+<span class="fc" id="L24">            ArrayList&lt;Event&gt; eventList = eventDB.get(key);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            for (Event e : eventList) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">                if (e.getID().equals(id)) {</span>
+<span class="fc" id="L27">                    eventList.remove(e);</span>
+<span class="fc" id="L28">                    break;</span>
+                }
+<span class="fc" id="L30">            }</span>
+<span class="fc" id="L31">            eventDB.put(key, eventList);</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
+
+    public int getCurrentDate() {
+<span class="fc" id="L36">        LocalDate currentDate = LocalDate.now();</span>
+<span class="fc" id="L37">        return currentDate.getDayOfMonth();</span>
+    }
+
+    public int getCurrentMonth() {
+<span class="fc" id="L41">        LocalDate currentDate = LocalDate.now();</span>
+<span class="fc" id="L42">        return currentDate.getMonthValue();</span>
+    }
+
+    public int getCurrentYear() {
+<span class="fc" id="L46">        LocalDate currentDate = LocalDate.now();</span>
+<span class="fc" id="L47">        return currentDate.getYear();</span>
+    }
+
+    public ArrayList&lt;Event&gt; getEventsByDate(String date) {
+<span class="fc" id="L51">        return eventDB.get(date);</span>
+    }
+
+    public int getNumberOfDates() {
+<span class="nc" id="L55">        return this.eventDB.keySet().size();</span>
+    }
+
+    public Event searchEventById(String id) {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (String key : eventDB.keySet()) {</span>
+<span class="fc" id="L60">            ArrayList&lt;Event&gt; eventList = eventDB.get(key);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">            for (Event e : eventList) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">                if (e.getID().equals(id)) {</span>
+<span class="fc" id="L63">                    return e;</span>
+                }
+<span class="fc" id="L65">            }</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc" id="L67">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

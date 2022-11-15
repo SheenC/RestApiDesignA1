@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Event.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">A0</a> &gt; <a href="index.source.html" class="el_package">a0</a> &gt; <span class="el_source">Event.java</span></div><h1>Event.java</h1><pre class="source lang-java linenums">package a0;
+
+public class Event {
+<span class="fc" id="L4">    private static int count = 0;</span>
+
+    private String eventID;
+    private int month;
+    private int date;
+    private int year;
+
+    private String patient;
+    private String doctor;
+    private String comment;
+
+<span class="fc" id="L15">    public Event(int month, int date, int year, String patient, String doctor, String comment) {</span>
+<span class="fc" id="L16">        count++;</span>
+<span class="fc" id="L17">        this.eventID = count+&quot;&quot;;</span>
+<span class="fc" id="L18">        this.month = month;</span>
+<span class="fc" id="L19">        this.date = date;</span>
+<span class="fc" id="L20">        this.year = year;</span>
+<span class="fc" id="L21">        this.patient = patient;</span>
+<span class="fc" id="L22">        this.doctor = doctor;</span>
+<span class="fc" id="L23">        this.comment = comment;</span>
+<span class="fc" id="L24">    }</span>
+
+    public void setMonth(int month) {
+<span class="fc" id="L27">        this.month = month;</span>
+<span class="fc" id="L28">    }</span>
+
+    public void setDate(int date) {
+<span class="fc" id="L31">        this.date = date;</span>
+<span class="fc" id="L32">    }</span>
+
+    public void setYear(int year) {
+<span class="fc" id="L35">        this.year = year;</span>
+<span class="fc" id="L36">    }</span>
+
+    public void setPatient(String patient) {
+<span class="fc" id="L39">        this.patient = patient;</span>
+<span class="fc" id="L40">    }</span>
+
+    public void setDoctor(String doctor) {
+<span class="nc" id="L43">        this.doctor = doctor;</span>
+<span class="nc" id="L44">    }</span>
+
+    public void setComment(String comment) {
+<span class="fc" id="L47">        this.comment = comment;</span>
+<span class="fc" id="L48">    }</span>
+
+    public String getID() {
+<span class="fc" id="L51">        return this.eventID;</span>
+    }
+
+    public int getDate() {
+<span class="fc" id="L55">        return this.date;</span>
+    }
+
+    public int getMonth() {
+<span class="fc" id="L59">        return this.month;</span>
+    }
+
+    public int getYear() {
+<span class="fc" id="L63">        return this.year;</span>
+    }
+
+    public String getPatient() {
+<span class="nc" id="L67">        return this.patient;</span>
+    }
+
+    public String getDoctor() {
+<span class="nc" id="L71">        return this.doctor;</span>
+    }
+
+    public String getComment() {
+<span class="nc" id="L75">        return this.comment;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

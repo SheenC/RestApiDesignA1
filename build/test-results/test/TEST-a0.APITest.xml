@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="a0.APITest" tests="14" skipped="0" failures="0" errors="0" timestamp="2022-11-10T19:26:03" hostname="MacBook-Pro-279.local" time="5.924">
+  <properties/>
+  <testcase name="dai_returns_200_with_expected_current_month()" classname="a0.APITest" time="5.483"/>
+  <testcase name="dai_returns_200_post_new_event()" classname="a0.APITest" time="0.101"/>
+  <testcase name="dai_returns_500_with_internal_server_error_all_events()" classname="a0.APITest" time="0.027"/>
+  <testcase name="dai_returns_404_with_invalid_current_year_path()" classname="a0.APITest" time="0.02"/>
+  <testcase name="dai_returns_500_post_new_event_internal_server_error()" classname="a0.APITest" time="0.024"/>
+  <testcase name="dai_returns_500_revise_event_internal_server_error()" classname="a0.APITest" time="0.026"/>
+  <testcase name="dai_returns_500_delete_event_internal_server_error()" classname="a0.APITest" time="0.014"/>
+  <testcase name="dai_returns_404_with_invalid_current_date_path()" classname="a0.APITest" time="0.015"/>
+  <testcase name="dai_returns_404_with_invalid_current_month_path()" classname="a0.APITest" time="0.014"/>
+  <testcase name="dai_returns_200_revise_event()" classname="a0.APITest" time="0.021"/>
+  <testcase name="dai_returns_200_with_expected_current_date()" classname="a0.APITest" time="0.029"/>
+  <testcase name="dai_returns_200_with_expected_current_year()" classname="a0.APITest" time="0.026"/>
+  <testcase name="dai_returns_200_delete_event()" classname="a0.APITest" time="0.014"/>
+  <testcase name="dai_returns_200_with_expected_all_events_given_date()" classname="a0.APITest" time="0.104"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

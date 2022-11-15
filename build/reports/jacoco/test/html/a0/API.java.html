@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>API.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">A0</a> &gt; <a href="index.source.html" class="el_package">a0</a> &gt; <span class="el_source">API.java</span></div><h1>API.java</h1><pre class="source lang-java linenums">package a0;
+
+import com.google.gson.*;
+
+import java.util.*;
+
+import static spark.Spark.*;
+
+<span class="nc" id="L9">public class API {</span>
+    // http://localhost:4567/
+    public static void main(String[] args) {
+<span class="fc" id="L12">        Database db = new Database();</span>
+<span class="fc" id="L13">        Event event1 = new Event(11,5,2022, &quot;Jason123&quot;, &quot;M.D. Julie&quot;, &quot;The patient got a Flu.&quot;);</span>
+<span class="fc" id="L14">        Event event2 = new Event(11,5,2022, &quot;LucyLee&quot;, &quot;M.D. Patrick&quot;, &quot;The patient had a wisdom tooth extraction.&quot;);</span>
+<span class="fc" id="L15">        db.addEvent(event1);</span>
+<span class="fc" id="L16">        db.addEvent(event2);</span>
+
+        // API get current date
+        // GET http://localhost:4567/DAI/current/date
+<span class="fc" id="L20">        JsonObject dateObject = new JsonObject();</span>
+<span class="fc" id="L21">        dateObject.addProperty(&quot;date&quot;, db.getCurrentDate());</span>
+<span class="fc" id="L22">        JsonObject currentDateObject = new JsonObject();</span>
+<span class="fc" id="L23">        currentDateObject.add(&quot;current&quot;, dateObject);</span>
+<span class="fc" id="L24">        get(&quot;/DAI/current/date&quot;, (req, res) -&gt; currentDateObject);</span>
+
+        // API get current month
+        // GET http://localhost:4567/DAI/current/month
+<span class="fc" id="L28">        JsonObject monthObject = new JsonObject();</span>
+<span class="fc" id="L29">        monthObject.addProperty(&quot;month&quot;, db.getCurrentMonth());</span>
+<span class="fc" id="L30">        JsonObject currentMonthObject = new JsonObject();</span>
+<span class="fc" id="L31">        currentMonthObject.add(&quot;current&quot;, monthObject);</span>
+<span class="fc" id="L32">        get(&quot;/DAI/current/month&quot;, (req, res) -&gt; currentMonthObject);</span>
+
+        // API get current year
+        // GET http://localhost:4567/DAI/current/year
+<span class="fc" id="L36">        JsonObject yearObject = new JsonObject();</span>
+<span class="fc" id="L37">        yearObject.addProperty(&quot;year&quot;, db.getCurrentYear());</span>
+<span class="fc" id="L38">        JsonObject currentYearObject = new JsonObject();</span>
+<span class="fc" id="L39">        currentYearObject.add(&quot;current&quot;, yearObject);</span>
+<span class="fc" id="L40">        get(&quot;/DAI/current/year&quot;, (req, res) -&gt; currentYearObject);</span>
+
+        // API get events for a given date
+        // GET http://localhost:4567/DAI/allEvents/year/2022/month/11/date/5
+<span class="fc" id="L44">        get(&quot;/DAI/allEvents/year/:yyyy/month/:mm/date/:dd&quot;,</span>
+                (req, res) -&gt; {
+<span class="fc" id="L46">                    int year = Integer.parseInt(req.params(&quot;:yyyy&quot;));</span>
+<span class="fc" id="L47">                    int month = Integer.parseInt(req.params(&quot;:mm&quot;));</span>
+<span class="fc" id="L48">                    int date = Integer.parseInt(req.params(&quot;:dd&quot;));</span>
+
+<span class="fc" id="L50">                    ArrayList&lt;Event&gt; events = db.getEventsByDate(month+&quot;/&quot;+date+&quot;/&quot;+year);</span>
+
+<span class="fc" id="L52">                    return new Gson().toJson(events);</span>
+                });
+
+        // API add event
+        // POST http://localhost:4567/DAI/event?month=11&amp;date=6&amp;year=2022&amp;patient=kelly&amp;doctor=M.D. Andrew&amp;comment=The patient got a headache.
+<span class="fc" id="L57">        post(&quot;/DAI/event&quot;, (req, res) -&gt; {</span>
+            // Get request body attributes
+<span class="fc" id="L59">            int date = Integer.parseInt(req.queryParams(&quot;date&quot;));</span>
+<span class="fc" id="L60">            int month = Integer.parseInt(req.queryParams(&quot;month&quot;));</span>
+<span class="fc" id="L61">            int year = Integer.parseInt(req.queryParams(&quot;year&quot;));</span>
+<span class="fc" id="L62">            String patient = req.queryParams(&quot;patient&quot;);</span>
+<span class="fc" id="L63">            String doctor = req.queryParams(&quot;doctor&quot;);</span>
+<span class="fc" id="L64">            String comment = req.queryParams(&quot;comment&quot;);</span>
+            // Add event to database
+<span class="fc" id="L66">            Event event3 = new Event(month, date, year, patient, doctor, comment);</span>
+<span class="fc" id="L67">            db.addEvent(event3);</span>
+<span class="fc" id="L68">            return &quot;Event &quot; + event3.getID() + &quot; Added&quot;;</span>
+        });
+
+        // API modify event
+        // PUT http://localhost:4567/DAI/event/3
+<span class="fc" id="L73">        put(&quot;/DAI/event/:id&quot;, (req, res) -&gt; {</span>
+            // Get request body attributes
+<span class="fc" id="L75">            String id = req.params(&quot;:id&quot;);</span>
+            // Search the event
+<span class="fc" id="L77">            Event event = db.searchEventById(id);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">            if (req.queryParams(&quot;date&quot;) != null) {</span>
+<span class="fc" id="L79">                int date = Integer.parseInt(req.queryParams(&quot;date&quot;));</span>
+                // revise date
+<span class="fc" id="L81">                event.setDate(date);</span>
+            }
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            if (req.queryParams(&quot;month&quot;) != null) {</span>
+<span class="fc" id="L84">                int month = Integer.parseInt(req.queryParams(&quot;month&quot;));</span>
+                // revise month
+<span class="fc" id="L86">                event.setMonth(month);</span>
+            }
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            if (req.queryParams(&quot;year&quot;) != null) {</span>
+<span class="fc" id="L89">                int year = Integer.parseInt(req.queryParams(&quot;year&quot;));</span>
+                // revise year
+<span class="fc" id="L91">                event.setYear(year);</span>
+            }
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (req.queryParams(&quot;patient&quot;) != null) {</span>
+<span class="fc" id="L94">                String patient = req.queryParams(&quot;patient&quot;);</span>
+                // revise patient
+<span class="fc" id="L96">                event.setPatient(patient);</span>
+            }
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (req.queryParams(&quot;doctor&quot;) != null) {</span>
+<span class="nc" id="L99">                String doctor = req.queryParams(&quot;doctor&quot;);</span>
+                // revise patient
+<span class="nc" id="L101">                event.setDoctor(doctor);</span>
+            }
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (req.queryParams(&quot;comment&quot;) != null) {</span>
+<span class="fc" id="L104">                String comment = req.queryParams(&quot;comment&quot;);</span>
+                // revise comment
+<span class="fc" id="L106">                event.setComment(comment);</span>
+            }
+            // Replace the event in the database
+<span class="fc" id="L109">            db.deleteEvent(id);</span>
+<span class="fc" id="L110">            db.addEvent(event);</span>
+<span class="fc" id="L111">            return &quot;Event &quot; + id + &quot; Revised&quot;;</span>
+        });
+
+        // API delete event
+        // DELETE http://localhost:4567/DAI/event/3
+<span class="fc" id="L116">        delete(&quot;/DAI/event/:id&quot;, (req, res) -&gt; {</span>
+<span class="fc" id="L117">            String id = req.params(&quot;:id&quot;);</span>
+            // Delete the event
+<span class="fc" id="L119">            db.deleteEvent(id);</span>
+<span class="fc" id="L120">            return &quot;Event &quot; + id + &quot; Deleted&quot;;</span>
+        });
+<span class="fc" id="L122">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

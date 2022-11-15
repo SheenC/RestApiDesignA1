@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HelloWorld.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">A0</a> &gt; <a href="index.source.html" class="el_package">a0</a> &gt; <span class="el_source">HelloWorld.java</span></div><h1>HelloWorld.java</h1><pre class="source lang-java linenums">package a0;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.eclipse.jetty.util.ajax.JSON;
+
+import java.io.ObjectStreamException;
+import java.util.*;
+
+import static spark.Spark.*;
+
+<span class="nc" id="L14">public class HelloWorld {</span>
+    // http://localhost:4567/hello
+    public static void main(String[] args) {
+<span class="nc" id="L17">        Database db = new Database();</span>
+<span class="nc" id="L18">        Event event1 = new Event(11,5,2022, &quot;Jason123&quot;, &quot;M.D. Julie&quot;, &quot;The patient got a Flu.&quot;);</span>
+<span class="nc" id="L19">        Event event2 = new Event(11,5,2022, &quot;LucyLee&quot;, &quot;M.D. Patrick&quot;, &quot;The patient had a wisdom tooth extraction.&quot;);</span>
+<span class="nc" id="L20">        db.addEvent(event1);</span>
+<span class="nc" id="L21">        db.addEvent(event2);</span>
+
+        // API get current date
+        // http://localhost:4567/DAI/current/date
+<span class="nc" id="L25">        JsonObject dateObject = new JsonObject();</span>
+<span class="nc" id="L26">        dateObject.addProperty(&quot;date&quot;, db.getCurrentDate());</span>
+<span class="nc" id="L27">        JsonObject currentDateObject = new JsonObject();</span>
+<span class="nc" id="L28">        currentDateObject.add(&quot;current&quot;, dateObject);</span>
+<span class="nc" id="L29">        get(&quot;/DAI/current/date&quot;, (req, res) -&gt; currentDateObject);</span>
+
+        // API get current month
+        // http://localhost:4567/DAI/current/month
+<span class="nc" id="L33">        JsonObject monthObject = new JsonObject();</span>
+<span class="nc" id="L34">        monthObject.addProperty(&quot;month&quot;, db.getCurrentMonth());</span>
+<span class="nc" id="L35">        JsonObject currentMonthObject = new JsonObject();</span>
+<span class="nc" id="L36">        currentMonthObject.add(&quot;current&quot;, monthObject);</span>
+<span class="nc" id="L37">        get(&quot;/DAI/current/month&quot;, (req, res) -&gt; currentMonthObject);</span>
+
+        // API get current year
+        // http://localhost:4567/DAI/current/year
+<span class="nc" id="L41">        JsonObject yearObject = new JsonObject();</span>
+<span class="nc" id="L42">        yearObject.addProperty(&quot;year&quot;, db.getCurrentYear());</span>
+<span class="nc" id="L43">        JsonObject currentYearObject = new JsonObject();</span>
+<span class="nc" id="L44">        currentYearObject.add(&quot;current&quot;, yearObject);</span>
+<span class="nc" id="L45">        get(&quot;/DAI/current/year&quot;, (req, res) -&gt; currentYearObject);</span>
+
+        // API get events for a given date
+        // http://localhost:4567/DAI/allEvents/year/2022/month/11/date/5
+<span class="nc" id="L49">        get(&quot;/DAI/allEvents/year/:yyyy/month/:mm/date/:dd&quot;,</span>
+                (req, res) -&gt; {
+<span class="nc" id="L51">                    int year = Integer.parseInt(req.params(&quot;:yyyy&quot;));</span>
+<span class="nc" id="L52">                    int month = Integer.parseInt(req.params(&quot;:mm&quot;));</span>
+<span class="nc" id="L53">                    int date = Integer.parseInt(req.params(&quot;:dd&quot;));</span>
+
+<span class="nc" id="L55">                    ArrayList&lt;Event&gt; events = db.getEventsByDate(month+&quot;/&quot;+date+&quot;/&quot;+year);</span>
+
+<span class="nc" id="L57">                    return new Gson().toJson(events);</span>
+                });
+<span class="nc" id="L59">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
